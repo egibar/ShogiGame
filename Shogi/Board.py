@@ -1,3 +1,5 @@
+import Shogi
+import collections
 from Shogi.Move import *
 from Shogi.Piece import *
 from Shogi.Constants import *
@@ -28,6 +30,8 @@ class Board(object):
 
         self.turn = WHITE
 
+        self.pieces_in_hand = [collections.Counter(), collections.Counter()]
+
         self.occupied = Occupied(B_ROW_G | B_H2 | B_H8 | B_ROW_I, B_ROW_A | B_B2 | B_B8 | B_ROW_C)
 
         self.pieces = [0 for i in SQUARES]  # CREATE THE EMPTY BOARD
@@ -38,6 +42,13 @@ class Board(object):
                 if mask & self.piece_b[piece_type]:
                     self.pieces[i] = piece_type
 
+    def is_check_mate(self):
+        #TODO: Look if it is a check mate
+        return False
+
+    def is_check(self):
+        #TODO: Look if it is a check
+        pass
 
     def piece_at(self, square):
         mask = B_SQUARES[square]
@@ -50,6 +61,68 @@ class Board(object):
     def piece_type_at(self, square):
         return self.pieces[square]
 
+
+    def remove_piece_at(self, square):
+        piece_type = self.piece_type_at(square)
+
+        if piece_type == NONE:
+            return
+
+        mask = B_SQUARES[square]
+
+        self.piece_b[piece_type] ^= mask
+
+        color = int(bool(self.occupied[WHITE] & mask))
+
+        self.pieces[square] = NONE
+        self.occupied.update(mask, color)
+
+    def set_piece_at(self, square, piece):
+        self.remove_piece_at(square)
+
+        self.pieces[square] = piece.piece_type
+
+        mask = B_SQUARES[square]
+
+        piece_type = piece.piece_type
+
+        self.piece_b[piece_type] |= mask
+
+        self.occupied.update(mask, piece.color)
+
+    def add_piece_to_hand(self,piece_type,color):
+        pass
+
+    def remove_piece_off_hand(self,piece_type,color):
+        pass
+
+    def is_piece_in_hand(self,piece_type,color):
+        pass
+
+    def move(self,from_square, to_square):
+        #TODO: Improve the reason why the move is invalid.
+        move = Shogi.Move.get_squares(from_square, to_square)
+        piece = self.piece_at(move.from_square)
+        piece_to_go=self.piece_at(move.to_square)
+        if (piece_to_go !=None):
+            if (piece_to_go.color!=self.turn & Shogi.Move.is_a_valid_attack(self,piece,move.from_square,move.to_square)):
+                self.add_piece_to_hand(piece_to_go.piece_type,self.turn)
+                self.remove_piece_at(move.from_square)
+                self.set_piece_at(move.to_square, Piece(piece.piece_type, self.turn))
+                self.turn ^= 1
+                return True
+            else:
+                return False
+        elif(piece.piece_type!=0):
+            if (piece.color==self.turn & Shogi.Move.is_a_valid_move(self,piece,move.from_square,move.to_square)):
+                self.remove_piece_at(move.from_square)
+                self.set_piece_at(move.to_square, Piece(piece.piece_type, self.turn))
+                self.turn ^= 1
+                return True
+            else:
+                return False
+        else:
+            return False
 
     def __str__(self):
         builder = []
@@ -92,3 +165,8 @@ class Occupied(object):
     def __getitem__(self, key):
         if key in COLORS:
             return self.by_color[key]
+
+
+    def update(self, mask, color):
+        self.bits ^= mask
+        self.by_color[color] ^= mask

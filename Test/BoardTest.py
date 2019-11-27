@@ -20,3 +20,22 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.piece_at(79).piece_type, KNIGHT)  # I2
         self.assertEqual(board.piece_at(80).piece_type, LANCE)  # I1
 
+    def test_attack_move(self):
+        board = Shogi.Board()
+        self.assertEqual(board.move('C7','G7'),True)#It should be False once is_valid_attack is implemented
+
+    def test_attack_same_color(self):
+        board=Shogi.Board()
+        self.assertEqual(board.move('A7','C7'), False)
+
+    def test_remove_piece(self):
+        pass
+
+    def test_set_piece_at(self):
+        pass
+
+    def test_piece_type_at(self):
+        pass
+
+    def test_piece_at(self):
+        pass

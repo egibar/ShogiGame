@@ -1,13 +1,4 @@
-COLORS = [BLACK, WHITE] = range(2)
-
-PIECE_TYPES = [
-           PAWN,      LANCE,      KNIGHT,      SILVER,
-           GOLD,
-         BISHOP,       ROOK,
-           KING,
-]= range(8)
-
-PIECE_SYMBOLS = ['p',  'l',  'n',  's', 'g',  'b',  'r', 'k']
+from Shogi.Constants import *
 
 class Piece(object):
     def __init__(self, piece_type, color):
@@ -16,6 +7,8 @@ class Piece(object):
 
     def symbol(self):
         if self.color == BLACK:
-            return PIECE_SYMBOLS[self.piece_type].upper()
+            direction = '^'
+            return PIECE_SYMBOLS[self.piece_type].upper() + direction
         else:
-            return PIECE_SYMBOLS[self.piece_type]
+            direction = 'v'
+            return PIECE_SYMBOLS[self.piece_type] + direction

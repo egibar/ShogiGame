@@ -7,6 +7,8 @@ Features:
 - Moves of the pieces, but right now the moves are free, there are not limited among the pieces allowed moves.
 - Detect if the piece can be promoted.
 - Normalize the inputs, you can introduce the square as you want (e.g: C7 or c 7 or 7c .....)
+- Insert a given piece type in a given square
+- Remove a given piece type from a given square
 
 Next Improvements:
 - Check if the move is valid

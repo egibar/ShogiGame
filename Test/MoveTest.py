@@ -7,7 +7,7 @@ from Shogi import *
 class MoveTestCase(unittest.TestCase):
     def test_default(self):
         self.assertEqual(Board().turn,1)
-        #self.assertEqual(board.piece_type_at,shogi.PIECE_TYPES[7])
+        #self.assertEqual(board.piece_type_at,Shogi.PIECE_TYPES[7])
 
     def test_normalizer(self):
         board = Board()

@@ -19,3 +19,4 @@ class Main:
                 i = i + 1
             else:
                 print("The movement was not valid. Repeat please.")
+            #TODO: User board.turn to count the turn, and created the number of moves

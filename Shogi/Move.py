@@ -27,3 +27,13 @@ class Move(object):
 
     def is_a_valid_attack(self,piece,piece_from,piece_to):
         return True
+
+
+    def can_promote(square, piece_type, color):
+        if piece_type not in [PAWN, LANCE, KNIGHT, SILVER, BISHOP, ROOK]:
+            return False
+        elif color == BLACK:
+            return square//9 <= 2
+        else:
+            return square//9 >= 6
+

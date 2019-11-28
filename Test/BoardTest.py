@@ -29,13 +29,18 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.move('A7','C7'), False)
 
     def test_remove_piece(self):
-        pass
+        board = Shogi.Board()
+        self.assertEqual(board.piece_at(56).piece_type, PAWN)  # G7
+        board.remove_piece_at(56)
+        self.assertEqual(board.piece_at(56), None)  # G7
+
 
     def test_set_piece_at(self):
-        pass
+        board = Shogi.Board()
+        piece = board.piece_at(56)
+        board.set_piece_at(47,piece)
+        self.assertEqual(board.piece_at(47).piece_type, PAWN)  # G7
 
-    def test_piece_type_at(self):
-        pass
 
-    def test_piece_at(self):
-        pass
+
+

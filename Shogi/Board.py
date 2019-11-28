@@ -103,26 +103,31 @@ class Board(object):
         #TODO: Improve the reason why the move is invalid.
         move = Shogi.Move.get_squares(from_square, to_square)
         piece = self.piece_at(move.from_square)
-        piece_to_go=self.piece_at(move.to_square)
-        if (piece_to_go !=None):
-            if (piece_to_go.color!=self.turn & Shogi.Move.is_a_valid_attack(self,piece,move.from_square,move.to_square)):
-                self.add_piece_to_hand(piece_to_go.piece_type,self.turn)
-                self.remove_piece_at(move.from_square)
-                self.set_piece_at(move.to_square, Piece(piece.piece_type, self.turn))
-                self.turn ^= 1
-                return True
+        piece_to_go = self.piece_at(move.to_square)
+        if (piece != None):
+            if (piece_to_go != None):
+                if (piece_to_go.color != self.turn & Shogi.Move.is_a_valid_attack(self, piece, move.from_square,move.to_square)):
+                    self.add_piece_to_hand(piece_to_go.piece_type, self.turn)
+                    self.remove_piece_at(move.from_square)
+                    self.set_piece_at(move.to_square, Piece(piece.piece_type, self.turn))
+                    self.turn ^= 1
+                    return True
+                else:
+                    return False
             else:
-                return False
-        elif(piece.piece_type!=0):
-            if (piece.color==self.turn & Shogi.Move.is_a_valid_move(self,piece,move.from_square,move.to_square)):
-                self.remove_piece_at(move.from_square)
-                self.set_piece_at(move.to_square, Piece(piece.piece_type, self.turn))
-                self.turn ^= 1
-                return True
-            else:
-                return False
+                if (piece.color==self.turn & Shogi.Move.is_a_valid_move(self,piece,move.from_square,move.to_square)):
+                    #if(Shogi.Move.can_promote(piece.piece_type,self.turn,to_square)):
+                    self.remove_piece_at(move.from_square)
+                    # Put piece on target square.
+                    self.set_piece_at(move.to_square, Piece(piece.piece_type, self.turn))
+                    # Swap turn.
+                    self.turn ^= 1
+                    return True
+                else:
+                    return False
         else:
-            return False
+             return False
+
 
     def __str__(self):
         builder = []
